@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "UIElements2"
+rootProject.name = "UIElementsPart2"
