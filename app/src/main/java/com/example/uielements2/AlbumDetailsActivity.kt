@@ -1,12 +1,13 @@
 package com.example.uielements2
 
+import android.app.AlertDialog
+import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+
+
 import android.util.Log
-import android.widget.ArrayAdapter
-import android.widget.ImageView
-import android.widget.ListView
-import android.widget.TextView
+import android.widget.*
 
 class AlbumDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -17,7 +18,7 @@ class AlbumDetailsActivity : AppCompatActivity() {
         var viewImage = findViewById<ImageView>(R.id.icon_details)
         var viewText = findViewById<TextView>(R.id.icon_name)
 
-        if(albumItems.icons == R.drawable.disturbed) {
+        if (albumItems.icons == R.drawable.disturbed) {
             viewImage.setImageResource(albumItems.icons!!)
 
             val songsQueueArray = arrayOf("The Vengeful One", "The Light", "Fire It Up",
@@ -25,8 +26,27 @@ class AlbumDetailsActivity : AppCompatActivity() {
             val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songsQueueArray)
             val albumSongs = findViewById<ListView>(R.id.album_songs)
             albumSongs.adapter = adapter
-        }
-        else if(albumItems.icons == R.drawable.kda){
+
+            albumSongs.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                val dialogAlert = AlertDialog.Builder(this)
+                dialogAlert.setMessage("Do you want to remove this song from list?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", DialogInterface.OnClickListener() { dialog, which ->
+                            val removeSong = songsQueueArray[position]
+                            songsQueueArray.remove(removeSong)
+                            adapter.notifyDataSetChanged()
+
+                        })
+                        .setNegativeButton("No", DialogInterface.OnClickListener {
+                            dialog, which ->
+                            dialog.cancel()
+                        })
+                val alert = dialogAlert.create()
+                alert.setTitle("Alert! Deleting Song")
+                alert.show()
+            }// item listener
+
+        } else if (albumItems.icons == R.drawable.kda) {
             viewImage.setImageResource(albumItems.icons!!)
             viewText.text = "ALL OUT"
 
@@ -35,8 +55,27 @@ class AlbumDetailsActivity : AppCompatActivity() {
             val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songsQueueArray)
             val albumSongs = findViewById<ListView>(R.id.album_songs)
             albumSongs.adapter = adapter
-        }
-        else if(albumItems.icons == R.drawable.lux){
+
+            albumSongs.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                val dialogAlert = AlertDialog.Builder(this)
+                dialogAlert.setMessage("Do you want to remove this song from list?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", DialogInterface.OnClickListener() { dialog, which ->
+                            val removeSong = songsQueueArray[position]
+                            songsQueueArray.remove(removeSong)
+                            adapter.notifyDataSetChanged()
+
+                        })
+                        .setNegativeButton("No", DialogInterface.OnClickListener {
+                            dialog, which ->
+                            dialog.cancel()
+                        })
+                val alert = dialogAlert.create()
+                alert.setTitle("Alert! Deleting Song")
+                alert.show()
+            }// item listener
+
+        } else if (albumItems.icons == R.drawable.lux) {
             viewImage.setImageResource(albumItems.icons!!)
             viewText.text = "Lux"
 
@@ -45,6 +84,25 @@ class AlbumDetailsActivity : AppCompatActivity() {
             val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songsQueueArray)
             val albumSongs = findViewById<ListView>(R.id.album_songs)
             albumSongs.adapter = adapter
+
+            albumSongs.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+                val dialogAlert = AlertDialog.Builder(this)
+                dialogAlert.setMessage("Do you want to remove this song from list?")
+                        .setCancelable(false)
+                        .setPositiveButton("Yes", DialogInterface.OnClickListener() { dialog, which ->
+                            val removeSong = songsQueueArray[position]
+                            songsQueueArray.remove(removeSong)
+                            adapter.notifyDataSetChanged()
+
+                        })
+                        .setNegativeButton("No", DialogInterface.OnClickListener {
+                            dialog, which ->
+                            dialog.cancel()
+                        })
+                val alert = dialogAlert.create()
+                alert.setTitle("Alert! Deleting Song")
+                alert.show()
+            }// item listener
         }
     }
 }

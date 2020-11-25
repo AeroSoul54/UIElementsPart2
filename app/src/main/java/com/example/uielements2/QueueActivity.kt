@@ -1,38 +1,101 @@
 package com.example.uielements2
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.ListView
+import android.view.ContextMenu
+import android.view.MenuItem
+import android.view.View
+import android.widget.*
+import java.util.*
 
 class QueueActivity : AppCompatActivity() {
+        lateinit var notificationManager: NotificationManager
+        lateinit var notificationChannel: NotificationChannel
+        lateinit var builder: Notification.Builder
+        private val channelId="com.example.uielements2"
+        private val description="Notification"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_queue)
 
-        val preferences = getSharedPreferences("sharedPrefs", 0)
-        val songs = preferences.getString("songname", "")
-        val songs2 = preferences.getString("songname2", "")
-        val songs3 = preferences.getString("songname3", "")
-        val songs4 = preferences.getString("songname4", "")
-        val songs5 = preferences.getString("songname5", "")
-        val songs6 = preferences.getString("songname6", "")
-        val songs7 = preferences.getString("songname7", "")
-        val songs8 = preferences.getString("songname8", "")
-        val songs9 = preferences.getString("songname9", "")
-        val songs10 = preferences.getString("songname10", "")
-        val songs11 = preferences.getString("songname11", "")
-        val songs12 = preferences.getString("songname12", "")
-        val songs13 = preferences.getString("songname13", "")
-        val songs14 = preferences.getString("songname14", "")
-        val songs15 = preferences.getString("songname15", "")
+        notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+        val Intent = Intent(this, QueueActivity::class.java)
+        val pendingIntent =
+            PendingIntent.getActivity(this, 0, Intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
-        val songsQueueArray = arrayOf(songs, songs2, songs3, songs4, songs5, songs6, songs7, songs8, songs9, songs10, songs11, songs12, songs13, songs14, songs15)
-        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, songsQueueArray)
-        val songsList = findViewById<ListView>(R.id.queue_songs)
-        songsList.adapter = adapter
+        var list: List<String>? = albumSongs
 
+        if (list.orEmpty().isEmpty() && (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)) {
+            notificationChannel =
+                NotificationChannel(channelId, description, NotificationManager.IMPORTANCE_HIGH)
+            notificationChannel.enableLights(true)
+            notificationChannel.lightColor = Color.GREEN
+            notificationChannel.enableVibration(false)
+            notificationManager.createNotificationChannel(notificationChannel)
 
+            builder = Notification.Builder(this, channelId)
+                .setContentTitle("UIElementsPart 2 Notification")
+                .setContentText("The Queue is Empty")
+                .setSmallIcon(R.drawable.ic_launcher_round)
+                .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.drawable.ic_launcher))
+                .setContentIntent(pendingIntent)
+
+        } else {
+            builder = Notification.Builder(this)
+                .setContentTitle("test")
+                .setContentText("Notification")
+                .setSmallIcon(R.mipmap.ic_launcher_round)
+                .setLargeIcon(BitmapFactory.decodeResource(this.resources, R.mipmap.ic_launcher))
+                .setContentIntent(pendingIntent)
+        }
+        notificationManager.notify(1234, builder.build())
+
+            val adapter =
+                ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, albumSongs)
+            val songsList = findViewById<ListView>(R.id.queue_songs)
+            songsList.adapter = adapter
+            registerForContextMenu(songsList)
+
+        }
+        override fun onCreateContextMenu(
+            menu: ContextMenu?,
+            v: View?,
+            menuInfo: ContextMenu.ContextMenuInfo?
+        ) {
+            super.onCreateContextMenu(menu, v, menuInfo)
+            val inflater = menuInflater
+            inflater.inflate(R.menu.queue_menu, menu)
+        }
+
+        override fun onContextItemSelected(item: MenuItem): Boolean {
+
+            return when (item.itemId) {
+
+                R.id.remove_from_queue -> {
+                    val info = item.menuInfo as AdapterView.AdapterContextMenuInfo
+                    albumSongs.removeAt(info.position)
+                    true
+                    finish();
+                    overridePendingTransition(0, 0);
+                    startActivity(getIntent());
+                    overridePendingTransition(0, 0);
+                    Toast.makeText(getBaseContext(), "Song Removed", Toast.LENGTH_SHORT).show();
+                    true
+                }
+                else -> super.onContextItemSelected(item)
+
+            }
+        }
     }
-}
+
+
