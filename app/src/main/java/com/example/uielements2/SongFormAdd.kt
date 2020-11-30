@@ -1,11 +1,13 @@
 package com.example.uielements2
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.example.uielements2.models.Song
+
 
 class SongFormAdd : AppCompatActivity() {
     lateinit var btnConfirm:Button
@@ -31,12 +33,15 @@ class SongFormAdd : AppCompatActivity() {
             if(title.isNotEmpty() && artitst.isNotEmpty() && album.isNotEmpty()) {
                 val song = Song(title = title, artist = artitst, album = album)
                 databaseHelper.create(song)
-                Toast.makeText(this,"Song added successfully", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Song added successfully", Toast.LENGTH_SHORT).show()
             }
             else
-                Toast.makeText(this,"Please fill up the credentials", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Please fill up the credentials", Toast.LENGTH_SHORT).show()
             clearFields()
         }
+    }
+    override fun onBackPressed() {
+        startActivity(Intent(this, MainActivity::class.java))
     }
 
     fun clearFields(){

@@ -1,5 +1,6 @@
 package com.example.uielements2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -24,10 +25,10 @@ class AlbumSongFormAdd : AppCompatActivity() {
         btnConfirm = findViewById(R.id.btn_confirm_add_song_main_album)
         btnConfirm.setOnClickListener {
             val title = etTitle.text.toString()
-            val artitst = etArtist.text.toString()
+            val artist = etArtist.text.toString()
 
-            if(title.isNotEmpty() && artitst.isNotEmpty() ) {
-                val albumSong = AlbumSong(title = title, artist = artitst)
+            if(title.isNotEmpty() && artist.isNotEmpty() ) {
+                val albumSong = AlbumSong(title = title, artist = artist)
                 databaseHelper.albumSongCreate(albumSong)
                 Toast.makeText(this,"Song added to album successfully", Toast.LENGTH_SHORT).show()
             }
@@ -36,7 +37,9 @@ class AlbumSongFormAdd : AppCompatActivity() {
             clearFields()
         }
     }
-
+    override fun onBackPressed() {
+        startActivity(Intent(this, AlbumActivity::class.java))
+    }
     fun clearFields(){
         etTitle.text.clear()
         etArtist.text.clear()

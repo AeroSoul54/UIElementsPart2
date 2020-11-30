@@ -76,7 +76,7 @@ class AlbumActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.go_to_add_album -> {
-                startActivity(Intent(this, AlbumFormAdd::class.java))
+                startActivity(Intent( this, AlbumFormAdd::class.java))
                 true
             }
             else -> super.onOptionsItemSelected(item)

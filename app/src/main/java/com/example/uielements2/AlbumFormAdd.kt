@@ -1,5 +1,6 @@
 package com.example.uielements2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -34,6 +35,9 @@ class AlbumFormAdd : AppCompatActivity() {
                 Toast.makeText(this,"Please fill up the credentials", Toast.LENGTH_SHORT).show()
             clearFields()
         }
+    }
+    override fun onBackPressed() {
+        startActivity(Intent(this, AlbumActivity::class.java))
     }
 
     fun clearFields(){

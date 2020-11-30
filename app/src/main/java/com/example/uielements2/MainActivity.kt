@@ -12,11 +12,11 @@ import android.widget.ArrayAdapter
 import android.widget.ListView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import com.example.uielements2.models.Song
 import com.google.android.material.snackbar.Snackbar
 
 class MainActivity : AppCompatActivity() {
+
     lateinit var songsQueueArray: MutableList<Song>
     lateinit var songsTableHandler: DatabaseHelper
     lateinit var adapter: ArrayAdapter<Song>
@@ -51,6 +51,15 @@ class MainActivity : AppCompatActivity() {
 
         return when (item.itemId) {
             R.id.add_to_queue -> {
+                val info = item.menuInfo as AdapterContextMenuInfo
+                albumSongs.add(songsQueueArray[info.position].toString())
+                true
+                val snackbar: Snackbar = Snackbar.make(this.findViewById(R.id.songsQueueListView),
+                        "Navigate to Queue", Snackbar.LENGTH_LONG)
+                snackbar.setAction("Go", View.OnClickListener {
+                    startActivity(Intent(this, QueueActivity::class.java))
+                })
+                snackbar.show()
                 true
             }
             R.id.go_to_edit_songs -> {
@@ -64,13 +73,12 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.go_to_delete_songs -> {
                 val song = songsQueueArray[listPosition]
-                if(songsTableHandler.delete(song)){
+                if (songsTableHandler.delete(song)) {
                     songsQueueArray.removeAt(listPosition)
                     adapter.notifyDataSetChanged()
-                    Toast.makeText(this,"Song deleted successfully", Toast.LENGTH_SHORT).show()
-                }
-                else{
-                    Toast.makeText(this,"Song deletion failed", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Song deleted successfully", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Song deletion failed", Toast.LENGTH_SHORT).show()
                 }
                 true
             }
@@ -105,3 +113,4 @@ class MainActivity : AppCompatActivity() {
         }
     }
 }
+val albumSongs = arrayListOf<String>()

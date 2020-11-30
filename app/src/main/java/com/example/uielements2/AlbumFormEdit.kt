@@ -1,5 +1,6 @@
 package com.example.uielements2
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -45,4 +46,7 @@ override fun onCreate(savedInstanceState: Bundle?) {
     }
 
 }
+    override fun onBackPressed() {
+        startActivity(Intent(this, AlbumActivity::class.java))
+    }
 }
