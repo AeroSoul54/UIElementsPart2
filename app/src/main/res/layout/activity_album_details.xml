@@ -6,30 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".AlbumDetailsActivity">
 
-    <ImageView
-        android:id="@+id/icon_details"
-        android:layout_width="350dp"
-        android:layout_height="350dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="50dp"
-        android:src="@drawable/disturbed"
-        app:srcCompat="@drawable/disturbed"></ImageView>
 
     <TextView
-        android:id="@+id/icon_name"
+        android:id="@+id/tv_album_title_details"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/icon_details"
+        android:text="Album Title"
+        android:textSize="40dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Immortalized"></TextView>
+        android:layout_marginTop="20dp">
+    </TextView>
 
     <ListView
         android:id="@+id/album_songs"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/icon_name"
-        android:layout_marginTop="20dp"/>
+        android:layout_below="@id/tv_album_title_details"
+        android:layout_marginTop="40dp"/>
 
 
 </RelativeLayout>
